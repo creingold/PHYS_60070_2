@@ -1,0 +1,99 @@
+/*Buffer
+This program take information from a buffer, and at a certain point
+reads it into a 10000 line histograms, using pointers and pointer arithmatic.
+It then reads the header and buffer into an array. Uses the pointer to skip
+Header, reads the whole data file. Once the whole file is read, save the generated
+histograms into a file in a three column table: bin # hist1 hist2. Then plot
+histograms
+
+*/
+
+//Consider Putting all of the data into a text file.
+
+#include <iostream>
+#include <cctype>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include <cmath>
+using namespace std;
+
+int main(){
+	int hist1[1000]={0};
+	int hist2[1000]={0};
+	float Buffering[100];
+	//float *pBuffer=Buffering;
+	int DetectorNum=0;
+	float Energy=0;
+
+
+	int i=0;
+	int j=0;
+	int k=0;
+	int l=0;
+	int m=0;
+	int kk=0;
+
+	string line;
+
+	ifstream fIn("Buffer.dat");
+	ofstream fOut("Histograms1.dat");
+
+
+	//Data comes out paired as detector number and energy
+
+	while(!fIn.eof()){//While the end of the file hasn't been reached.
+		//Buffer reads the first one hundred lines.
+		for(int jj=0;jj<100;jj++){
+		fIn>>Buffering[jj];
+		//cout<< Buffering[jj];
+		}
+		getline(fIn, line);
+		while(i<45){
+			//Skip first ten things you read. Use pointers?
+			//DetectorNum=*Buffering +2i+10
+			//Energy=*Buffering+2i+10
+			DetectorNum=*(Buffering+(2*i)+10);
+			Energy=*(Buffering+(2*i)+1+10);
+			cout<< Energy<< endl;
+			if(DetectorNum==0){
+				while(j<1000){
+					//cout<< abs(Energy-j)<< endl;
+					if(abs(Energy-j)<.7){
+						hist1[j]++;
+						//cout<< hist1[j];
+					}
+					j++;
+				}
+
+			}
+			j=0;
+			if(DetectorNum==1){
+				while(j<1000){
+					if(abs(Energy-j)<.5){
+						hist2[j]++;
+					}
+					j++;
+			}
+
+		}
+		j=0;
+
+		m++;
+		i++;
+		//cout<< i<< endl;
+	}
+	i=0;
+	k++;
+}
+	//Now save the data file as bin# hist1 hist2
+
+	while(kk<1000){
+		fOut<<kk<<"  " << hist1[kk]<< "  "<< hist2[kk]<< endl;
+		//cout<<l<<"  " << hist1[l]<< "  "<< hist2[l]<< endl;
+		kk++;
+	}
+
+return 0;
+
+}
