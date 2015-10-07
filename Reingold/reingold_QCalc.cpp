@@ -262,6 +262,8 @@ a = 46
 
 	char outputString[256];
 
+	// Running the (X,g) reaction
+
 	Product = Reactor( Target , Projectile , Photon );
 	if ( Product.Z != -1 ){
 		QValue = QCalculator(Target, Projectile , Product , Photon );
@@ -276,6 +278,7 @@ a = 46
 		cout  << endl;
 	}
 
+	// Looping over the (X,Nn) , (X,Np) , (X,Nd) , (X,Nt) , (X,N He3) reactions for N = 1,2,3
 
 	for ( int c = 39 ; c < 44 ; c++ ){
 		for ( int d = 1 ; d < 4 ; d++ ){
@@ -289,7 +292,7 @@ a = 46
 
 				cout << outputString;
 
-				if ( QLow * 1000 <= QValue and QHigh * 1000 >= QValue and Product.Z != -100 ){
+				if ( QLow * 1000 <= QValue and QHigh * 1000 > QValue ){
 					cout << " * " ;
 					outfile << outputString << '\n';	
 				}
@@ -298,6 +301,8 @@ a = 46
 		}
 	}
 
+	// Runnint the (X , Na) reaction where N = 1,2,3
+
 	for ( int e = 1; e < 4 ; e++ ){
 		nucleus Ejectile = getInfo(46);
 		Product = Reactor ( Target , Projectile, Ejectile , e);
@@ -305,7 +310,10 @@ a = 46
 		if ( Product.Z != -100 ){
 			QValue = QCalculator(Target, Projectile , Product , Ejectile , e);
 			sprintf ( outputString , "%d%s + %d%s -> %d%s + %d( %d%s ) ( QValue = %f keV )" , Target.A , Target.Name , Projectile.A , Projectile.Name , Product.A , Product.Name , e , Ejectile.A , Ejectile.Name , QValue );
-			if ( QLow * 1000 <= QValue and QHigh * 1000 >= QValue and Product.Z != -100 ){
+
+			cout << outputString ;
+
+			if ( QLow * 1000 <= QValue and QHigh * 1000 > QValue ){
 				cout << " * " ;
 				outfile << outputString << '\n';
 			}
